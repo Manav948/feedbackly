@@ -1,6 +1,6 @@
 import userModel from "@/model/User";
 import connectDb from "@/lib/dbCongig";
-import { authOptions } from "@/auth/[...nextauth]/options";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { User } from "next-auth";
 import { getServerSession } from "next-auth";
 

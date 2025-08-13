@@ -16,8 +16,8 @@ export async function GET(request: Request) {
         console.log(result)
 
         if (!result.success) {
-            const error = result.error.format().username?._errors || [];
-            return Response.json({ success: false, message: error }, { status: 400 })
+            const errorMessage = result.error.format().username?._errors || [];
+            return Response.json({ success: false, message: errorMessage.join(', ') }, { status: 400 })
         }
 
         const { username } = result.data
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
             return Response.json({ success: false, message: "username already taken" }, { status: 400 })
         }
 
-        return Response.json({ success: true, message: "username is available" }, { status: 201 })
+        return Response.json({ success: true, message: "username is available" }, { status: 200 })
     } catch (error) {
         console.log("error checking in username : ", error);
         return Response.json({ success: false, message: "error checking in username" }, { status: 500 })
