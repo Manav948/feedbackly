@@ -32,9 +32,10 @@ const Page = () => {
     if (response?.error) {
       toast.error("Error occurred, please try again")
     }
-    if (response?.url) {
+    else {
       router.replace('/dashboard')
     }
+   
   }
 
   return (
