@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <>
       {/* Main content */}
-      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-12 bg-gradient-to-br from-black via-gray-900 to-black text-white">
+      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-12 bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white">
         <section className="text-center mb-8 md:mb-12">
           <h1 className="text-4xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 drop-shadow-lg">
             Welcome to Feedbackly
@@ -44,7 +44,9 @@ export default function Home() {
                 index: Key
               ) => (
                 <CarouselItem key={index} className="p-4">
-                  <Card className="bg-white/5 backdrop-blur-md border border-white/10 shadow-lg hover:scale-[1.02] transition-transform">
+                  <Card className="bg-gradient-to-br from-black/60 via-white/10 to-gray-900/80 
+                 backdrop-blur-lg border border-white/15 shadow-lg rounded-2xl 
+                 transition-transform hover:scale-[1.02] hover:shadow-[0_0_20px_#9333ea]/40">
                     <CardHeader>
                       <CardTitle className="text-purple-300">{message.title}</CardTitle>
                     </CardHeader>

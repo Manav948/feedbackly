@@ -30,7 +30,8 @@ const Navbar = () => {
             </span>
             <Button
               onClick={() => signOut()}
-              className="bg-purple-500 hover:bg-purple-600 text-white shadow-md transition-all duration-200"
+              className="bg-gradient-to-r from-teal-400 to-violet-500 text-black font-semibold 
+                         hover:shadow-[0_0_20px_rgba(139,92,246,0.6)] hover:scale-[1.03] transition"
             >
               Logout
             </Button>
@@ -38,7 +39,8 @@ const Navbar = () => {
         ) : (
           <Link href="/sign-in">
             <Button
-              className="bg-purple-500 hover:bg-purple-600 text-white shadow-md transition-all duration-200"
+              className="bg-gradient-to-r from-orange-400 via-pink-500 to-red-500 text-white font-semibold
+hover:shadow-[0_0_20px_rgba(236,72,153,0.7)] hover:scale-[1.03] transition"
             >
               Login
             </Button>

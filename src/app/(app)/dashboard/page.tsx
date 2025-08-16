@@ -3,7 +3,7 @@
 import { Message } from '@/model/User'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSession } from 'next-auth/react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { accpectMessageSchema } from '@/schemas/accpectMessage'
 import axios, { AxiosError } from 'axios'
@@ -15,6 +15,10 @@ import { Loader2, RefreshCcw } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { Separator } from '@/components/ui/separator'
 import { useRouter } from 'next/navigation'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import gsap from 'gsap'
 
 const Page = () => {
   const [messages, setMessages] = useState<Message[]>([])
@@ -23,9 +27,27 @@ const Page = () => {
 
   const { data: session, status } = useSession()
   const router = useRouter()
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // GSAP entrance animations
+  useEffect(() => {
+    if (containerRef.current) {
+      gsap.fromTo(
+        containerRef.current.children,
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out',
+        }
+      )
+    }
+  }, [])
 
   const form = useForm({
-    resolver: zodResolver(accpectMessageSchema)
+    resolver: zodResolver(accpectMessageSchema),
   })
   const { register, watch, setValue } = form
   const accpectMessage = watch('accpectMessage')
@@ -52,7 +74,7 @@ const Page = () => {
     setLoading(true)
     setIsSwitchLoading(false)
     try {
-      const response = await axios.get<ApiResponse>('/api/get-mesages')
+      const response = await axios.get<ApiResponse>('/api/get-messages')
       setMessages(response.data.messages || [])
       if (refresh) {
         toast.success('Messages refreshed')
@@ -80,7 +102,7 @@ const Page = () => {
   const handleSwitching = async () => {
     try {
       const response = await axios.post<ApiResponse>('/api/accpect-message', {
-        accpectMessage: !accpectMessage
+        accpectMessage: !accpectMessage,
       })
       setValue('accpectMessage', !accpectMessage)
       toast.success(response.data.message)
@@ -92,7 +114,7 @@ const Page = () => {
   }
 
   if (status === 'loading') {
-    return <div>Loading...</div>
+    return <div className="text-center py-10 text-white">Loading...</div>
   }
 
   if (status === 'unauthenticated') {
@@ -109,62 +131,96 @@ const Page = () => {
   }
 
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
+    <div className="min-h-screen w-full bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white px-4 lg:px-8 py-10">
+      <div ref={containerRef} className="max-w-5xl mx-auto space-y-8">
+        <h1 className="text-5xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-400 drop-shadow-lg tracking-tight">
+          User Dashboard
+        </h1>
 
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>
-        <div className="flex items-center">
-          <input
-            type="text"
-            value={profileUrl}
-            disabled
-            className="input input-bordered w-full p-2 mr-2"
-          />
-          <Button onClick={copyClipBoard}>Copy</Button>
-        </div>
-      </div>
-
-      <div className="mb-4">
-        <Switch
-          {...register('accpectMessage')}
-          checked={accpectMessage}
-          onCheckedChange={handleSwitching}
-          disabled={isSwitchLoading}
-        />
-        <span className="ml-2">
-          Accept Messages: {accpectMessage ? 'On' : 'Off'}
-        </span>
-      </div>
-      <Separator />
-
-      <Button
-        className="mt-4"
-        variant="outline"
-        onClick={(e) => {
-          e.preventDefault()
-          fetchMessage(true)
-        }}
-      >
-        {loading ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <RefreshCcw className="h-4 w-4" />
-        )}
-      </Button>
-
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {messages.length > 0 ? (
-          messages.map((message) => (
-            <MessageCard
-              key={message._id as string}
-              message={message}
-              onMessageDelete={handleDelete}
+        {/* Copy Link Section */}
+        <Card className="bg-gradient-to-bl from-gray-900 via-gray-950 to-black backdrop-blur-xl border border-purple-500/30 shadow-2xl hover:shadow-purple-500/40 transition rounded-2xl">
+          <CardHeader>
+            <CardTitle className="text-xl text-gray-100">Your Unique Profile Link</CardTitle>
+          </CardHeader>
+          <CardContent className="flex items-center space-x-2">
+            <input
+              type="text"
+              value={profileUrl}
+              disabled
+              className="w-full rounded-lg border border-white/20 bg-black/40 backdrop-blur px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
             />
-          ))
-        ) : (
-          <p>No messages to display.</p>
-        )}
+            <Button
+              onClick={copyClipBoard}
+              variant="secondary"
+              className="hover:shadow-[0_0_15px_#a855f7] transition bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg"
+            >
+              Copy
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Accept Messages Switch */}
+        <Card className="bg-gradient-to-bl from-gray-900 via-gray-950 to-black backdrop-blur-xl border border-cyan-400/30 shadow-xl hover:shadow-cyan-400/30 transition rounded-2xl">
+          <CardContent className="flex items-center justify-between py-6">
+            <div>
+              <Label className="text-lg font-semibold text-gray-100">Accept Messages</Label>
+              <p className="text-sm text-gray-400">
+                Toggle to allow or block incoming anonymous messages
+              </p>
+            </div>
+            <Switch
+              {...register('accpectMessage')}
+              checked={accpectMessage}
+              onCheckedChange={handleSwitching}
+              disabled={isSwitchLoading}
+            />
+          </CardContent>
+        </Card>
+
+        <Separator className="bg-white/10" />
+
+        {/* Refresh Button */}
+        <div className="flex justify-end my-4">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className=" bg-black hover:shadow-[0_0_20px_#22d3ee] transition rounded-full"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    fetchMessage(true)
+                  }}
+                >
+                  {loading ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <RefreshCcw className="h-5 w-5" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Refresh Messages</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+
+        {/* Messages Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {messages.length > 0 ? (
+            messages.map((message) => (
+              <MessageCard
+                key={message._id as string}
+                message={message}
+                onMessageDelete={handleDelete}
+              />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12 text-gray-400 bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-md border border-white/10 rounded-xl">
+              No messages to display yet.
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
