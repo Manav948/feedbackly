@@ -25,17 +25,18 @@ const Page = () => {
   const onsubmit = async (data: z.infer<typeof signInSchema>) => {
     const response = await signIn('credentials', {
       redirect: false,
+      callbackUrl: '/dashboard',
       identifier: data.identifier,
       password: data.password
     })
-
     if (response?.error) {
-      toast.error("Error occurred, please try again")
+      toast.error(response.error);
+    } else if (response?.ok && response.url) {
+      router.replace(response.url);
+    } else {
+      toast.error("Invalid credentials");
     }
-    else {
-      router.replace('/dashboard')
-    }
-   
+
   }
 
   return (

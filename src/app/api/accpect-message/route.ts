@@ -15,8 +15,8 @@ export async function POST(request: Request) {
     const { accpectMessages } = await request.json()
     try {
         const updatedUser = await userModel.findByIdAndUpdate(userId, { isActive: accpectMessages }, { new: true })
-        if (updatedUser) {
-            return Response.json({ success: false, message: "failed to update a user status to accpect message" }, { status: 401 })
+        if (!updatedUser) {
+            return Response.json({ success: false, message: "failed to update a user status to accpect message" }, { status: 404 })
         }
         return Response.json({ success: true, message: "status updated successfully " }, { status: 200 })
     } catch (error) {
@@ -34,7 +34,7 @@ export async function GET(request: Request) {
     }
     const userId = user._id;
     try {
-        const foundUser = await userModel.findById(userId);
+        const foundUser = await userModel.findById(userId).select("isActive");
         if (!foundUser) {
             return Response.json({ success: false, message: "User not found" }, { status: 404 })
         }

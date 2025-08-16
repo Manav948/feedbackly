@@ -7,10 +7,10 @@ import bcrypt from 'bcryptjs'
 export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
-            id: "Credentials",
+            id: "credentials",
             name: "Credentials",
             credentials: {
-                email: { label: "Email", type: "text" },
+                identifier: { label: "Email Or Username", type: "text" },
                 password: { label: "password", type: "password" },
             },
             async authorize(credentials: any): Promise<any> {
@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
                     })
                     if (!user) {
                         console.log("user not found with this email")
-                        throw new Error('No User found');
+                        return null;
                     }
                     if (!user.isVarified) {
                         throw new Error('Please verify your account first');
@@ -32,10 +32,17 @@ export const authOptions: NextAuthOptions = {
 
                     const isPassword = await bcrypt.compare(credentials.password, user.password)
                     if (isPassword) {
-                        return user;
+                        return {
+                            _id: (user._id as string).toString(),
+                            email: user.email,
+                            username: user.username,
+                            isVarified: user.isVarified,
+                            isAccpect: (user as any).isAccpect,
+                        }
+
                     } else {
                         console.log("Incorrect password");
-                        throw new Error("Incorrect password please correct it")
+                        return null;
                     }
                 } catch (error: any) {
                     console.log("Error in authorizaion function : ", error);
@@ -47,19 +54,19 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token._id = user._id?.toString()
-                token.isVerified = user.isVerified;
-                token.isAccpect = user.isAccpect;
-                token.username = user.username;
+                token._id = (user as any)._id?.toString();
+                token.isVarified = (user as any).isVarified;
+                token.isAccpect = (user as any).isAccpect;
+                token.username = (user as any).username;
             }
             return token;
         },
         async session({ session, token }) {
             if (token) {
-                session.user._id = token._id
-                session.user.isVerified = token.isVerified
-                session.user.isAccpect = token.isAccpect
-                session.user.username = token.username
+                (session.user as any)._id = token._id;
+                (session.user as any).isVarified = token.isVarified;
+                (session.user as any).isAccpect = token.isAccpect;
+                (session.user as any).username = token.username;
             }
             return session
         }
