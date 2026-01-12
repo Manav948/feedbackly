@@ -19,12 +19,13 @@ export async function POST(request: Request) {
 
         if (existingUserByEmail) {
             if (existingUserByEmail.isVarified) {
-                return Response.json({ success: false, messsage: "user already exist try new email " }, { status: 400 })
+                return Response.json({ success: false, message: "user already exist try new email " }, { status: 400 })
             } else {
                  const hashPassword = await bcrypt.hash(password, 10);
                  existingUserByEmail.password = hashPassword
                  existingUserByEmail.verifyCode = verifyCode
                  existingUserByEmail.verifyCodeExpiry = new Date(Date.now() + 3600000)
+                 existingUserByEmail.isVarified = false
                  await existingUserByEmail.save()
             }
 
@@ -48,11 +49,11 @@ export async function POST(request: Request) {
         }
         const emailResponse = await sendVerificationMail(
             email,
-            password,
+            username,
             verifyCode
         )
         if (!emailResponse.success) {
-            return Response.json({ success: false, messsage: emailResponse.message }, { status: 500 })
+            return Response.json({ success: false, message: emailResponse.message }, { status: 500 })
         }
 
         return Response.json({ success: true, message: "user registered successfully please verified your email" }, { status: 201 })

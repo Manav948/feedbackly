@@ -8,8 +8,12 @@ export async function sendVerificationMail(
     verifyCode: string
 ): Promise<ApiResponse> {
     try {
+        if (!process.env.RESEND_API_KEY) {
+            return { success: false, message: 'Email service not configured' }
+        }
+
         await resend.emails.send({
-            from: 'onboarding@resend.dev',
+            from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
             to: email,
             subject: 'Verification Code',
             react: VerificationEmail({ username, otp: verifyCode }),
