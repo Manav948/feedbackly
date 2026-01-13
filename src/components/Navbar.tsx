@@ -10,42 +10,52 @@ const Navbar = () => {
   const { data: session } = useSession();
   const user = session?.user as User | undefined;
 
+  const linkClasses =
+    'text-sm font-medium text-gray-200 hover:text-white transition-colors duration-200';
+
   return (
-    <nav className="sticky top-0 z-50 bg-gradient-to-r from-gray-900 via-black to-gray-900 shadow-lg border-b border-gray-800">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4 p-4 md:px-6">
-        
-        {/* Logo */}
-        <Link 
-          href="/" 
-          className="text-2xl font-extrabold tracking-tight text-white hover:text-purple-400 transition-colors duration-200"
+    <nav className="sticky top-0 z-50 backdrop-blur-md bg-black border-b border-white/10">
+      <div className="container mx-auto flex items-center justify-between px-4 md:px-6 py-3">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-lg md:text-xl font-bold tracking-tight text-white"
         >
-          Feedbackly
+          <span className="h-8 w-8 rounded-full bg-gradient-to-br from-emerald-400 via-teal-400 to-cyan-500 flex items-center justify-center text-black shadow-lg">
+            F
+          </span>
+          <span>Feedbackly</span>
         </Link>
 
-        {/* Right Section */}
-        {session ? (
-          <div className="flex flex-col md:flex-row items-center gap-4">
-            <span className="text-sm md:text-base text-gray-300">
-              Welcome, <span className="font-semibold text-white">{user?.username || user?.email}</span>
-            </span>
-            <Button
-              onClick={() => signOut()}
-              className="bg-gradient-to-r from-teal-400 to-violet-500 text-black font-semibold 
-                         hover:shadow-[0_0_20px_rgba(139,92,246,0.6)] hover:scale-[1.03] transition"
-            >
-              Logout
-            </Button>
+        <div className="flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-4">
+            <Link href="/#how-it-works" className={linkClasses}>
+              How it works
+            </Link>
+            <Link href="/#features" className={linkClasses}>
+              Features
+            </Link>
           </div>
-        ) : (
-          <Link href="/sign-in">
-            <Button
-              className="bg-gradient-to-r from-orange-400 via-pink-500 to-red-500 text-white font-semibold
-hover:shadow-[0_0_20px_rgba(236,72,153,0.7)] hover:scale-[1.03] transition"
-            >
-              Login
-            </Button>
-          </Link>
-        )}
+
+          {session ? (
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:inline text-sm text-gray-300">
+                {user?.username || user?.email}
+              </span>
+              <Button
+                onClick={() => signOut()}
+                className="bg-gradient-to-r from-rose-500 via-fuchsia-500 to-indigo-500 text-white hover:shadow-[0_0_18px_rgba(236,72,153,0.5)]"
+              >
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <Link href="/sign-in">
+              <Button className="bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-semibold hover:shadow-[0_0_18px_rgba(16,185,129,0.4)]">
+                Sign in
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
     </nav>
   );

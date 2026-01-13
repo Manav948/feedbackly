@@ -124,6 +124,7 @@ const Page = () => {
   const { username } = session?.user || {}
   const baseUrl = `${window.location.protocol}//${window.location.host}`
   const profileUrl = `${baseUrl}/u/${username}`
+  const messageCount = messages.length
 
   const copyClipBoard = () => {
     navigator.clipboard.writeText(profileUrl)
@@ -131,95 +132,148 @@ const Page = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white px-4 lg:px-8 py-10">
-      <div ref={containerRef} className="max-w-5xl mx-auto space-y-8">
-        <h1 className="text-5xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-400 drop-shadow-lg tracking-tight">
-          User Dashboard
-        </h1>
+    <div className="min-h-screen w-full bg-gradient-to-br from-black via-slate-950 to-[#05060a] text-white px-4 lg:px-8 py-10">
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute left-6 top-10 h-72 w-72 rounded-full bg-emerald-500/20 blur-[120px]" />
+        <div className="absolute right-10 bottom-12 h-80 w-80 rounded-full bg-fuchsia-500/15 blur-[140px]" />
+      </div>
 
-        {/* Copy Link Section */}
-        <Card className="bg-gradient-to-bl from-gray-900 via-gray-950 to-black backdrop-blur-xl border border-purple-500/30 shadow-2xl hover:shadow-purple-500/40 transition rounded-2xl">
-          <CardHeader>
-            <CardTitle className="text-xl text-gray-100">Your Unique Profile Link</CardTitle>
-          </CardHeader>
-          <CardContent className="flex items-center space-x-2">
-            <input
-              type="text"
-              value={profileUrl}
-              disabled
-              className="w-full rounded-lg border border-white/20 bg-black/40 backdrop-blur px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
-            />
-            <Button
-              onClick={copyClipBoard}
-              variant="secondary"
-              className="hover:shadow-[0_0_15px_#a855f7] transition bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg"
-            >
-              Copy
-            </Button>
-          </CardContent>
-        </Card>
+      <div ref={containerRef} className="max-w-6xl mx-auto space-y-8">
+        <div className="flex flex-col gap-3">
+          <p className="text-sm uppercase tracking-[0.25em] text-emerald-200/80">Dashboard</p>
+          <h1 className="text-4xl md:text-5xl font-black leading-tight">
+            Hey {username}, your feedback HQ is ready.
+          </h1>
+          <p className="text-gray-300 max-w-3xl">
+            Share your link, manage incoming notes, and stay fully in control of what reaches you.
+          </p>
+        </div>
 
-        {/* Accept Messages Switch */}
-        <Card className="bg-gradient-to-bl from-gray-900 via-gray-950 to-black backdrop-blur-xl border border-cyan-400/30 shadow-xl hover:shadow-cyan-400/30 transition rounded-2xl">
-          <CardContent className="flex items-center justify-between py-6">
-            <div>
-              <Label className="text-lg font-semibold text-gray-100">Accept Messages</Label>
-              <p className="text-sm text-gray-400">
-                Toggle to allow or block incoming anonymous messages
-              </p>
-            </div>
-            <Switch
-              {...register('accpectMessage')}
-              checked={accpectMessage}
-              onCheckedChange={handleSwitching}
-              disabled={isSwitchLoading}
-            />
-          </CardContent>
-        </Card>
+        <div className="grid gap-6 lg:grid-cols-3">
+          <Card className="border border-white/10 bg-white/5 backdrop-blur-xl rounded-2xl">
+            <CardHeader>
+              <CardTitle className="text-lg text-gray-100">Your public link</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3">
+              <input
+                type="text"
+                value={profileUrl}
+                disabled
+                className="w-full rounded-lg border border-white/15 bg-black/40 backdrop-blur px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              />
+              <Button
+                onClick={copyClipBoard}
+                variant="secondary"
+                className="bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-semibold hover:shadow-[0_0_16px_rgba(16,185,129,0.35)]"
+              >
+                Copy link
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-white/10 bg-white/5 backdrop-blur-xl rounded-2xl">
+            <CardContent className="flex items-center justify-between py-6">
+              <div>
+                <Label className="text-lg font-semibold text-gray-100">Accept messages</Label>
+                <p className="text-sm text-gray-400">
+                  Toggle to allow or block incoming anonymous messages.
+                </p>
+              </div>
+              <Switch
+                {...register('accpectMessage')}
+                checked={accpectMessage}
+                onCheckedChange={handleSwitching}
+                disabled={isSwitchLoading}
+              />
+            </CardContent>
+          </Card>
+
+          <Card className="border border-white/10 bg-white/5 backdrop-blur-xl rounded-2xl">
+            <CardContent className="grid grid-cols-2 gap-3 py-6">
+              <div className="rounded-xl border border-white/10 bg-black/40 p-3">
+                <p className="text-xs uppercase tracking-wide text-gray-400">Messages</p>
+                <p className="text-2xl font-bold text-white">{messageCount}</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-black/40 p-3">
+                <p className="text-xs uppercase tracking-wide text-gray-400">Status</p>
+                <p className="text-lg font-semibold text-emerald-300">
+                  {accpectMessage ? 'Accepting' : 'Paused'}
+                </p>
+              </div>
+              <Button
+                className="col-span-2 bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-semibold hover:shadow-[0_0_16px_rgba(16,185,129,0.35)]"
+                onClick={(e) => {
+                  e.preventDefault()
+                  fetchMessage(true)
+                }}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Refreshing...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCcw className="mr-2 h-4 w-4" />
+                    Refresh inbox
+                  </>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
 
         <Separator className="bg-white/10" />
 
-        {/* Refresh Button */}
-        <div className="flex justify-end my-4">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className=" bg-black hover:shadow-[0_0_20px_#22d3ee] transition rounded-full"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    fetchMessage(true)
-                  }}
-                >
-                  {loading ? (
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                  ) : (
-                    <RefreshCcw className="h-5 w-5" />
-                  )}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Refresh Messages</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-
-        {/* Messages Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {messages.length > 0 ? (
-            messages.map((message) => (
-              <MessageCard
-                key={message._id as string}
-                message={message}
-                onMessageDelete={handleDelete}
-              />
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12 text-gray-400 bg-gradient-to-r from-gray-800/40 to-gray-900/40 backdrop-blur-md border border-white/10 rounded-xl">
-              No messages to display yet.
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-semibold">Recent messages</h2>
+              <p className="text-sm text-gray-400">
+                {messageCount > 0
+                  ? 'Delete what you do not need and keep the rest.'
+                  : 'Share your link to start receiving messages.'}
+              </p>
             </div>
-          )}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="bg-black border-white/15 text-white hover:shadow-[0_0_14px_rgba(16,185,129,0.35)] rounded-full"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      fetchMessage(true)
+                    }}
+                  >
+                    {loading ? (
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                    ) : (
+                      <RefreshCcw className="h-5 w-5" />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Refresh messages</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {messages.length > 0 ? (
+              messages.map((message) => (
+                <MessageCard
+                  key={message._id as string}
+                  message={message}
+                  onMessageDelete={handleDelete}
+                />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12 text-gray-400 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl">
+                No messages yet — share your link to invite feedback.
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

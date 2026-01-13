@@ -66,98 +66,130 @@ const Page = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      <div className="w-full max-w-md p-8 rounded-2xl shadow-xl border border-gray-800 bg-white/10 backdrop-blur-xl">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white lg:text-5xl mb-2">
-            Join with Feedbackly
-          </h1>
-          <p className="mb-6 text-gray-400">Sign up to start your anonymous adventure</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-[#0b0d11] text-white">
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute right-10 top-16 h-64 w-64 rounded-full bg-emerald-500/20 blur-[120px]" />
+        <div className="absolute left-8 bottom-10 h-64 w-64 rounded-full bg-cyan-500/15 blur-[120px]" />
+      </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              name="username"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-white">Username</FormLabel>
-                  <Input
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e)
-                      setUsername(e.target.value)
-                    }}
-                    className="bg-white/10 border border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
+      <div className="container mx-auto flex min-h-screen items-center px-4 py-10">
+        <div className="grid w-full gap-10 lg:grid-cols-2">
+          <div className="space-y-6">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200">
+              Create your link
+            </span>
+            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
+              Join Feedbackly and get an anonymous inbox in seconds.
+            </h1>
+            <p className="text-lg text-gray-300">
+              Choose a username, share your link, and start collecting honest feedback from friends,
+              customers, or teammates.
+            </p>
+            <div className="hidden lg:block rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
+              <h3 className="text-lg font-semibold mb-3">You&apos;ll be able to:</h3>
+              <ul className="space-y-2 text-gray-300 text-sm">
+                <li>• Toggle new messages on/off anytime.</li>
+                <li>• Delete messages instantly from your dashboard.</li>
+                <li>• Share your unique link wherever you want.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="w-full max-w-xl justify-self-end">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
+              <div className="mb-6">
+                <h2 className="text-3xl font-bold">Create your account</h2>
+                <p className="text-gray-400 text-sm">
+                  We&apos;ll email a verification code to keep your inbox secure.
+                </p>
+              </div>
+
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                  <FormField
+                    name="username"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-200">Username</FormLabel>
+                        <Input
+                          {...field}
+                          onChange={(e) => {
+                            field.onChange(e)
+                            setUsername(e.target.value)
+                          }}
+                          className="bg-black/40 border border-white/15 text-white placeholder-gray-500 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/40"
+                        />
+                        {userMessage && (
+                          <p className={`text-sm ${userMessage.includes('available') ? 'text-emerald-300' : 'text-red-400'}`}>
+                            {userMessage}
+                          </p>
+                        )}
+                        <FormMessage className="text-red-400" />
+                      </FormItem>
+                    )}
                   />
-                  {userMessage && (
-                    <p className={`text-sm ${userMessage.includes('available') ? 'text-green-400' : 'text-red-400'}`}>
-                      {userMessage}
-                    </p>
-                  )}
-                  <FormMessage className="text-red-400" />
-                </FormItem>
-              )}
-            />
 
-            <FormField
-              name="email"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-white">Email</FormLabel>
-                  <Input
-                    {...field}
-                    type="email"
-                    className="bg-white/10 border border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
+                  <FormField
+                    name="email"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-200">Email</FormLabel>
+                        <Input
+                          {...field}
+                          type="email"
+                          className="bg-black/40 border border-white/15 text-white placeholder-gray-500 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/40"
+                        />
+                        <p className="text-gray-400 text-sm">We&apos;ll send your verification code here.</p>
+                        <FormMessage className="text-red-400" />
+                      </FormItem>
+                    )}
                   />
-                  <p className="text-gray-400 text-sm">We will send you a verification code</p>
-                  <FormMessage className="text-red-400" />
-                </FormItem>
-              )}
-            />
 
-            <FormField
-              name="password"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-white">Password</FormLabel>
-                  <Input
-                    type="password"
-                    {...field}
-                    className="bg-white/10 border border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
+                  <FormField
+                    name="password"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-200">Password</FormLabel>
+                        <Input
+                          type="password"
+                          {...field}
+                          className="bg-black/40 border border-white/15 text-white placeholder-gray-500 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/40"
+                        />
+                        <FormMessage className="text-red-400" />
+                      </FormItem>
+                    )}
                   />
-                  <FormMessage className="text-red-400" />
-                </FormItem>
-              )}
-            />
 
-            <Button
-              type="submit"
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white py-2 rounded-lg transition-all duration-300 shadow-lg shadow-purple-900/50"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Please wait
-                </>
-              ) : (
-                'Sign Up'
-              )}
-            </Button>
-          </form>
-        </Form>
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-semibold hover:shadow-[0_0_20px_rgba(16,185,129,0.35)]"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Please wait
+                      </>
+                    ) : (
+                      'Create account'
+                    )}
+                  </Button>
+                </form>
+              </Form>
 
-        <div className="text-center mt-6">
-          <p className="text-gray-400">
-            Already a member?{' '}
-            <Link href="/sign-in" className="text-purple-400 hover:text-purple-300">
-              Sign in
-            </Link>
-          </p>
+              <div className="text-center mt-6">
+                <p className="text-gray-400 text-sm">
+                  Already with us?{' '}
+                  <Link href="/sign-in" className="text-emerald-300 hover:text-emerald-200 font-medium">
+                    Sign in
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

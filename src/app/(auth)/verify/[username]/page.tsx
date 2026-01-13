@@ -38,49 +38,58 @@ const Page = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      <div className="w-full max-w-md p-8 rounded-2xl shadow-xl border border-gray-800 bg-white/10 backdrop-blur-xl">
-        <h1 className="text-3xl font-extrabold text-center text-white mb-2">
-          Verify Your OTP
-        </h1>
-        <p className="text-gray-400 text-center mb-6">Enter the code we sent to your email</p>
+    <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-[#0b0d11] text-white">
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute right-10 top-16 h-60 w-60 rounded-full bg-emerald-500/20 blur-[120px]" />
+        <div className="absolute left-8 bottom-10 h-60 w-60 rounded-full bg-fuchsia-500/15 blur-[120px]" />
+      </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onsubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="code"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-300">OTP Code</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter your OTP"
-                      {...field}
-                      className="bg-white/10 border border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-400" />
-                </FormItem>
-              )}
-            />
+      <div className="flex items-center justify-center px-4 py-14">
+        <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
+          <h1 className="text-3xl font-extrabold text-center text-white mb-2">
+            Verify your email
+          </h1>
+          <p className="text-gray-400 text-center mb-6">
+            Enter the 6-digit code we sent to your inbox to activate your link.
+          </p>
 
-            <Button
-              type="submit"
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white py-2 rounded-lg transition-all duration-300 shadow-lg shadow-purple-900/50"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Verifying...
-                </>
-              ) : (
-                'Submit'
-              )}
-            </Button>
-          </form>
-        </Form>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onsubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="code"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-gray-200">Verification code</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="000000"
+                        {...field}
+                        className="bg-black/40 border border-white/15 text-white placeholder-gray-500 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/40"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-400" />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-semibold hover:shadow-[0_0_20px_rgba(16,185,129,0.35)]"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Verifying...
+                  </>
+                ) : (
+                  'Confirm code'
+                )}
+              </Button>
+            </form>
+          </Form>
+        </div>
       </div>
     </div>
   )

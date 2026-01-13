@@ -85,21 +85,27 @@ export default function SendMessage() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-black via-gray-950 to-gray-900 text-white">
+    <div className="min-h-screen w-full bg-gradient-to-br from-black via-slate-950 to-[#05060a] text-white">
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute left-8 top-12 h-72 w-72 rounded-full bg-emerald-500/20 blur-[120px]" />
+        <div className="absolute right-10 bottom-10 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-[120px]" />
+      </div>
+
       <div
         ref={containerRef}
         className="container mx-auto max-w-4xl px-6 py-12 space-y-10"
       >
-        <h1 className="glass-block text-4xl md:text-5xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-400 to-violet-500 drop-shadow-lg">
-          Public Profile Link
-        </h1>
+        <div className="text-center space-y-3 glass-block">
+          <p className="text-sm uppercase tracking-[0.25em] text-emerald-200/80">Send feedback</p>
+          <h1 className="text-4xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-cyan-300 to-fuchsia-300 drop-shadow-lg">
+            Drop a note for @{username}
+          </h1>
+          <p className="text-gray-300 max-w-2xl mx-auto">
+            Your message is anonymous. Be kind, be specific, and help them grow.
+          </p>
+        </div>
 
-        {/* Form Card */}
-        <Card
-          className="glass-card bg-white/5 backdrop-blur-xl border border-cyan-400/20 
-                     shadow-lg hover:shadow-cyan-400/40 hover:scale-[1.02] 
-                     transition-all duration-300 rounded-3xl"
-        >
+        <Card className="glass-card bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg rounded-3xl">
           <CardContent className="pt-8">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -108,14 +114,14 @@ export default function SendMessage() {
                   name="content"
                   render={({ field }) => (
                     <FormItem className="relative">
-                      <FormLabel className="absolute -top-3 left-3 px-2 text-sm text-cyan-300 bg-gray-900/80 rounded">
+                      <FormLabel className="absolute -top-3 left-3 px-2 text-sm text-emerald-200 bg-gray-900/80 rounded">
                         Message for @{username}
                       </FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Write your anonymous message here..."
-                          className="resize-none min-h-[130px] rounded-xl bg-black/40 border border-white/15 text-white p-4 
-                                     focus-visible:ring-2 focus-visible:ring-cyan-400/60 focus-visible:border-cyan-400/60"
+                          placeholder="Share your feedback or encouragement..."
+                          className="resize-none min-h-[150px] rounded-xl bg-black/40 border border-white/15 text-white p-4 
+                                     focus-visible:ring-2 focus-visible:ring-emerald-400/60 focus-visible:border-emerald-400/60"
                           {...field}
                         />
                       </FormControl>
@@ -128,8 +134,8 @@ export default function SendMessage() {
                   {isLoading ? (
                     <Button
                       disabled
-                      className="bg-gradient-to-r from-cyan-400 to-teal-400 text-black font-semibold 
-                                 hover:shadow-[0_0_18px_rgba(34,211,238,0.7)]"
+                      className="bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-semibold 
+                                 hover:shadow-[0_0_18px_rgba(16,185,129,0.35)]"
                     >
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Sending...
@@ -138,10 +144,10 @@ export default function SendMessage() {
                     <Button
                       type="submit"
                       disabled={isLoading || !messageContent}
-                      className="bg-gradient-to-r from-cyan-400 to-violet-500 text-black font-semibold 
-                                 hover:shadow-[0_0_20px_rgba(34,211,238,0.7)] hover:scale-[1.03] transition-transform"
+                      className="bg-gradient-to-r from-emerald-400 to-fuchsia-500 text-black font-semibold 
+                                 hover:shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:scale-[1.02] transition-transform"
                     >
-                      Send It
+                      Send it
                     </Button>
                   )}
                 </div>
@@ -150,18 +156,13 @@ export default function SendMessage() {
           </CardContent>
         </Card>
 
-        {/* Suggestions (horizontal pills) */}
-        <Card
-          className="glass-card bg-white/5 backdrop-blur-xl border border-violet-400/20 
-                     shadow-lg hover:shadow-violet-400/40 hover:scale-[1.02] 
-                     transition-all duration-300 rounded-3xl"
-        >
+        <Card className="glass-card bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg rounded-3xl">
           <CardHeader>
-            <h3 className="text-xl font-semibold text-center text-cyan-200">
-              Suggestions
+            <h3 className="text-xl font-semibold text-center text-emerald-200">
+              Quick suggestions
             </h3>
             <p className="text-center text-sm text-gray-400">
-              Tap a suggestion to auto-fill the message box
+              Tap a suggestion to auto-fill the message box.
             </p>
           </CardHeader>
 
@@ -172,7 +173,7 @@ export default function SendMessage() {
                   key={index}
                   variant="outline"
                   className="flex-shrink-0 px-4 py-2 rounded-full border border-white/20 bg-white/10 text-white 
-                             hover:bg-white hover:shadow-[0_0_14px_rgba(139,92,246,0.5)] hover:scale-105 transition"
+                             hover:bg-white hover:text-black hover:shadow-[0_0_14px_rgba(16,185,129,0.35)] hover:scale-105 transition"
                   onClick={() => handleMessageClick(message)}
                 >
                   {message}
@@ -184,15 +185,14 @@ export default function SendMessage() {
 
         <Separator className="glass-block bg-white/10" />
 
-        {/* CTA */}
         <div className="glass-block text-center">
-          <div className="mb-4 text-gray-300">Get Your Own Message Board</div>
+          <div className="mb-4 text-gray-300">Want your own anonymous inbox?</div>
           <Link href="/sign-up">
             <Button
-              className="bg-gradient-to-r from-teal-400 to-violet-500 text-black font-semibold 
-                         hover:shadow-[0_0_20px_rgba(139,92,246,0.6)] hover:scale-[1.03] transition"
+              className="bg-gradient-to-r from-emerald-400 to-fuchsia-500 text-black font-semibold 
+                         hover:shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:scale-[1.02] transition"
             >
-              Create Your Account
+              Create your account
             </Button>
           </Link>
         </div>

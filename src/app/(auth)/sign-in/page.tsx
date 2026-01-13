@@ -40,64 +40,94 @@ const Page = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
-      <div className="w-full max-w-md p-8 rounded-2xl shadow-xl border border-gray-800 bg-white/10 backdrop-blur-xl">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white lg:text-5xl mb-2">
-            Welcome Back
-          </h1>
-          <p className="mb-6 text-gray-400">
-            Sign in to continue your secret conversations
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-[#0b0d11] text-white">
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute right-10 top-20 h-64 w-64 rounded-full bg-emerald-500/20 blur-[120px]" />
+        <div className="absolute left-8 bottom-10 h-64 w-64 rounded-full bg-fuchsia-500/15 blur-[120px]" />
+      </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onsubmit)} className="space-y-6">
-            <FormField
-              name="identifier"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-300">Email/Username</FormLabel>
-                  <Input
-                    {...field}
-                    className="bg-white/10 border border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
-                  />
-                  <FormMessage className="text-red-400" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="password"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-300">Password</FormLabel>
-                  <Input
-                    type="password"
-                    {...field}
-                    className="bg-white/10 border border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
-                  />
-                  <FormMessage className="text-red-400" />
-                </FormItem>
-              )}
-            />
-            <Button
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white py-2 rounded-lg transition-all duration-300 shadow-lg shadow-purple-900/50"
-              type="submit"
-            >
-              Sign In
-            </Button>
-          </form>
-        </Form>
+      <div className="container mx-auto flex min-h-screen items-center px-4 py-10">
+        <div className="grid w-full gap-10 lg:grid-cols-2">
+          <div className="space-y-6">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200">
+              Secure access
+            </span>
+            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
+              Welcome back to your feedback desk.
+            </h1>
+            <p className="text-lg text-gray-300">
+              Sign in to view your inbox, control who can reach you, and keep the conversation
+              moving.
+            </p>
+            <div className="hidden lg:block rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
+              <h3 className="text-lg font-semibold mb-3">Why people love Feedbackly</h3>
+              <ul className="space-y-2 text-gray-300 text-sm">
+                <li>• Anonymous messages without the chaos.</li>
+                <li>• One-click pause and delete controls.</li>
+                <li>• Clean, distraction-free inbox view.</li>
+              </ul>
+            </div>
+          </div>
 
-        <div className="text-center mt-6">
-          <p className="text-gray-400">
-            Not a member yet?{' '}
-            <Link href="/sign-up" className="text-purple-400 hover:text-purple-300">
-              Sign up
-            </Link>
-          </p>
+          <div className="w-full max-w-xl justify-self-end">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
+              <div className="mb-6">
+                <h2 className="text-3xl font-bold">Sign in</h2>
+                <p className="text-gray-400 text-sm">
+                  Enter your credentials to jump back into the dashboard.
+                </p>
+              </div>
+
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onsubmit)} className="space-y-5">
+                  <FormField
+                    name="identifier"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-200">Email or username</FormLabel>
+                        <Input
+                          {...field}
+                          className="bg-black/40 border border-white/15 text-white placeholder-gray-500 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/40"
+                        />
+                        <FormMessage className="text-red-400" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    name="password"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-200">Password</FormLabel>
+                        <Input
+                          type="password"
+                          {...field}
+                          className="bg-black/40 border border-white/15 text-white placeholder-gray-500 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/40"
+                        />
+                        <FormMessage className="text-red-400" />
+                      </FormItem>
+                    )}
+                  />
+                  <Button
+                    className="w-full bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-semibold hover:shadow-[0_0_20px_rgba(16,185,129,0.35)]"
+                    type="submit"
+                  >
+                    Sign In
+                  </Button>
+                </form>
+              </Form>
+
+              <div className="text-center mt-6">
+                <p className="text-gray-400 text-sm">
+                  New to Feedbackly?{' '}
+                  <Link href="/sign-up" className="text-emerald-300 hover:text-emerald-200 font-medium">
+                    Create an account
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
