@@ -5,8 +5,9 @@ import { User } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import mongoose from "mongoose";
 
-export async function DELETE(request: Request, { params }: { params: { messageid: string } }) {
-    const messageId = params.messageid
+export async function DELETE(request: Request, { params }: { params: Promise<{ messageid: string }> }) {
+    const { messageid } = await params
+    const messageId = messageid
     await connectDb()
     const session = await getServerSession(authOptions)
     const _user: User = session?.user as User
