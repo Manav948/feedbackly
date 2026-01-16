@@ -76,8 +76,8 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative">
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-emerald-400/20 via-cyan-500/10 to-fuchsia-500/20 blur-3xl" />
+            <div className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-emerald-400/20 via-cyan-500/10 to-fuchsia-500/20 blur-3xl pointer-events-none" />
               <Card className="relative border border-white/10 bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl">
                 <CardHeader className="pb-0">
                   <CardTitle className="text-2xl text-white flex items-center gap-2">
@@ -89,7 +89,7 @@ export default function Home() {
                   <Carousel plugins={[Autoplay({ delay: 2600 })]} className="w-full">
                     <CarouselContent>
                       {messages.map((message, index) => (
-                        <CarouselItem key={index} className="">
+                        <CarouselItem key={index}>
                           <Card className="bg-gradient-to-br from-white/5 via-white/10 to-white/5 border border-white/10 shadow-lg rounded-2xl">
                             <CardHeader className="pb-2">
                               <CardTitle className="text-sm text-emerald-200 flex items-center gap-2">
