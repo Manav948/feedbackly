@@ -132,11 +132,7 @@ const Page = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-black via-slate-950 to-[#05060a] text-white px-4 lg:px-8 py-10">
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute left-6 top-10 h-72 w-72 rounded-full bg-emerald-500/20 blur-[120px]" />
-        <div className="absolute right-10 bottom-12 h-80 w-80 rounded-full bg-fuchsia-500/15 blur-[140px]" />
-      </div>
+    <div className="min-h-screen w-full bg-gradient-to-br from-black via-slate-950 to-[#05060a] text-white px-4 lg:px-8 py-10 pt-28">
 
       <div ref={containerRef} className="max-w-6xl mx-auto space-y-8">
         <div className="flex flex-col gap-3">
@@ -164,7 +160,7 @@ const Page = () => {
               <Button
                 onClick={copyClipBoard}
                 variant="secondary"
-                className="bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-semibold hover:shadow-[0_0_16px_rgba(16,185,129,0.35)]"
+                className="bg-gradient-to-r from-violet-400 to-cyan-500 text-white font-semibold hover:shadow-[0_0_16px_rgba(16,185,129,0.35)]"
               >
                 Copy link
               </Button>
@@ -201,7 +197,7 @@ const Page = () => {
                 </p>
               </div>
               <Button
-                className="col-span-2 bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-semibold hover:shadow-[0_0_16px_rgba(16,185,129,0.35)]"
+                className="col-span-2 bg-gradient-to-r from-violet-400 to-cyan-500 text-white font-semibold hover:shadow-[0_0_16px_rgba(16,185,129,0.35)]"
                 onClick={(e) => {
                   e.preventDefault()
                   fetchMessage(true)

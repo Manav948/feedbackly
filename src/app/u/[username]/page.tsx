@@ -23,10 +23,8 @@ import { ApiResponse } from '@/types/apiResponse';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { messageSchema } from '@/schemas/message';
-import { motion } from 'framer-motion';
 import gsap from 'gsap';
 
-// Example suggestions
 const suggestedMessages = [
   "What's your favorite movie?",
   'Do you have any pets?',
@@ -55,7 +53,6 @@ export default function SendMessage() {
         ...data,
         username,
       });
-
       toast.success(response.data.message);
       form.reset({ ...form.getValues(), content: '' });
     } catch (error) {
@@ -66,62 +63,58 @@ export default function SendMessage() {
     }
   };
 
-  // GSAP enter animations
   const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!containerRef.current) return;
-    const items = containerRef.current.querySelectorAll('.glass-card, .glass-block');
     gsap.fromTo(
-      items,
-      { y: 28, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: 'power3.out',
-      }
+      containerRef.current.children,
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, stagger: 0.15, duration: 0.7 }
     );
   }, []);
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-black via-slate-950 to-[#05060a] text-white">
       <div className="absolute inset-0 -z-10">
-        <div className="absolute left-8 top-12 h-72 w-72 rounded-full bg-emerald-500/20 blur-[120px]" />
-        <div className="absolute right-10 bottom-10 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-[120px]" />
+        <div className="absolute left-4 top-10 h-60 w-60 rounded-full bg-emerald-500/20 blur-[100px]" />
+        <div className="absolute right-4 bottom-10 h-60 w-60 rounded-full bg-fuchsia-500/15 blur-[100px]" />
       </div>
 
       <div
         ref={containerRef}
-        className="container mx-auto max-w-4xl px-6 py-12 space-y-10"
+        className="max-w-xl mx-auto px-4 sm:px-6 py-10 space-y-6"
       >
-        <div className="text-center space-y-3 glass-block">
-          <p className="text-sm uppercase tracking-[0.25em] text-emerald-200/80">Send feedback</p>
-          <h1 className="text-4xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-cyan-300 to-fuchsia-300 drop-shadow-lg">
+        <div className="text-center space-y-2">
+          <p className="text-xs uppercase tracking-[0.25em] text-emerald-200/80">
+            Send feedback
+          </p>
+
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-cyan-300 to-fuchsia-300">
             Drop a note for @{username}
           </h1>
-          <p className="text-gray-300 max-w-2xl mx-auto">
-            Your message is anonymous. Be kind, be specific, and help them grow.
+
+          <p className="text-sm text-gray-400">
+            Your message is anonymous. Be kind and helpful.
           </p>
         </div>
 
-        <Card className="glass-card bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg rounded-3xl">
-          <CardContent className="pt-8">
+        <Card className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl">
+          <CardContent className="pt-6">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                 <FormField
                   control={form.control}
                   name="content"
                   render={({ field }) => (
-                    <FormItem className="relative">
-                      <FormLabel className="absolute -top-3 left-3 px-2 text-sm text-emerald-200 bg-gray-900/80 rounded">
-                        Message for @{username}
+                    <FormItem>
+                      <FormLabel className="text-sm text-emerald-200">
+                        Message
                       </FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Share your feedback or encouragement..."
-                          className="resize-none min-h-[150px] rounded-xl bg-black/40 border border-white/15 text-white p-4 
-                                     focus-visible:ring-2 focus-visible:ring-emerald-400/60 focus-visible:border-emerald-400/60"
+                          placeholder="Write your anonymous feedback..."
+                          className="min-h-[120px] rounded-xl bg-black/40 border border-white/15 text-white"
                           {...field}
                         />
                       </FormControl>
@@ -130,50 +123,37 @@ export default function SendMessage() {
                   )}
                 />
 
-                <div className="flex justify-center">
+                <Button
+                  type="submit"
+                  disabled={isLoading || !messageContent}
+                  className="w-full bg-gradient-to-r from-emerald-400 to-fuchsia-500 text-black font-semibold"
+                >
                   {isLoading ? (
-                    <Button
-                      disabled
-                      className="bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-semibold 
-                                 hover:shadow-[0_0_18px_rgba(16,185,129,0.35)]"
-                    >
+                    <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Sending...
-                    </Button>
+                    </>
                   ) : (
-                    <Button
-                      type="submit"
-                      disabled={isLoading || !messageContent}
-                      className="bg-gradient-to-r from-emerald-400 to-fuchsia-500 text-black font-semibold 
-                                 hover:shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:scale-[1.02] transition-transform"
-                    >
-                      Send it
-                    </Button>
+                    'Send message'
                   )}
-                </div>
+                </Button>
               </form>
             </Form>
           </CardContent>
         </Card>
 
-        <Card className="glass-card bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg rounded-3xl">
+        <Card className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl">
           <CardHeader>
-            <h3 className="text-xl font-semibold text-center text-emerald-200">
-              Quick suggestions
-            </h3>
-            <p className="text-center text-sm text-gray-400">
-              Tap a suggestion to auto-fill the message box.
-            </p>
+            <h3 className="text-lg text-center">Quick suggestions</h3>
           </CardHeader>
 
           <CardContent>
-            <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar justify-center">
+            <div className="flex gap-2 overflow-x-auto pb-2">
               {suggestedMessages.map((message, index) => (
                 <Button
                   key={index}
                   variant="outline"
-                  className="flex-shrink-0 px-4 py-2 rounded-full border border-white/20 bg-white/10 text-white 
-                             hover:bg-white hover:text-black hover:shadow-[0_0_14px_rgba(16,185,129,0.35)] hover:scale-105 transition"
+                  className="whitespace-nowrap"
                   onClick={() => handleMessageClick(message)}
                 >
                   {message}
@@ -183,15 +163,11 @@ export default function SendMessage() {
           </CardContent>
         </Card>
 
-        <Separator className="glass-block bg-white/10" />
-
-        <div className="glass-block text-center">
-          <div className="mb-4 text-gray-300">Want your own anonymous inbox?</div>
+        <Separator className="bg-white/10" />
+        <div className="text-center space-y-3">
+          <p className="text-gray-400">Want your own anonymous inbox?</p>
           <Link href="/sign-up">
-            <Button
-              className="bg-gradient-to-r from-emerald-400 to-fuchsia-500 text-black font-semibold 
-                         hover:shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:scale-[1.02] transition"
-            >
+            <Button className="bg-gradient-to-r from-emerald-400 to-fuchsia-500 text-black font-semibold">
               Create your account
             </Button>
           </Link>
