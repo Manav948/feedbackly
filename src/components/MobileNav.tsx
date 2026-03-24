@@ -8,15 +8,16 @@ import {
   BarChart3,
   User,
   Settings,
+  HomeIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
+  { href: '/', icon: HomeIcon },
   { href: '/dashboard', icon: LayoutDashboard },
-  { href: '/feedback', icon: MessageSquare },
-  { href: '/analytics', icon: BarChart3 },
-  { href: '/profile', icon: User },
-  { href: '/settings', icon: Settings },
+  // { href: '/', icon: BarChart3 },
+  // { href: '/', icon: User },
+  // { href: '/', icon: Settings },
 ];
 
 export function MobileBottomNav() {
@@ -24,7 +25,7 @@ export function MobileBottomNav() {
 
   return (
     <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
-      <div className="flex items-center gap-2 px-3 py-2 rounded-2xl glass border border-white/10">
+      <div className="flex items-center gap-5 px-3 py-2 rounded-2xl glass border border-white/10">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
