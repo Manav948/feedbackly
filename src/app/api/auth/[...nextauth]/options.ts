@@ -12,6 +12,7 @@ export const authOptions: NextAuthOptions = {
             credentials: {
                 identifier: { label: "Email Or Username", type: "text" },
                 password: { label: "password", type: "password" },
+                isAutoLogin: { label: "isAutoLogin", type: "text" }
             },
             async authorize(credentials: any): Promise<any> {
                 await connectDb();
@@ -28,6 +29,17 @@ export const authOptions: NextAuthOptions = {
                     }
                     if (!user.isVarified) {
                         throw new Error('Please verify your account first');
+                    }
+
+                    // Auto-login after email verification (skips password check)
+                    if (credentials.isAutoLogin === "true") {
+                        return {
+                            _id: (user._id as string).toString(),
+                            email: user.email,
+                            username: user.username,
+                            isVarified: user.isVarified,
+                            isAccpect: (user as any).isAccpect,
+                        }
                     }
 
                     const isPassword = await bcrypt.compare(credentials.password, user.password)

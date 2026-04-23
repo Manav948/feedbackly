@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
+import { signIn } from 'next-auth/react'
 
 const Page = () => {
   const router = useRouter()
@@ -25,13 +26,29 @@ const Page = () => {
   const onsubmit = async (data: z.infer<typeof verifySchema>) => {
     setLoading(true)
     try {
+      // Verify the code
       await axios.post(`/api/verify-code`, { username: params.username, code: data.code })
-      toast.success("OTP verified successfully! Please sign in.")
-      router.replace('/sign-in')
+      
+      // Auto-login user after successful verification
+      const result = await signIn('credentials', {
+        identifier: params.username,
+        password: '', // Empty password for auto-login
+        isAutoLogin: 'true',
+        redirect: false
+      })
+
+      if (result?.ok) {
+        toast.success("Email verified! Logging you in...")
+        // Redirect to dashboard after successful login
+        router.replace('/dashboard')
+      } else {
+        toast.error("Auto-login failed. Please sign in manually.")
+        router.replace('/sign-in')
+      }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       console.log(axiosError.response?.data.message)
-      toast.error("OTP verification failed! Please try again.")
+      toast.error("Verification failed! Please try again.")
     } finally {
       setLoading(false)
     }
