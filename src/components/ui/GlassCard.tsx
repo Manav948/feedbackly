@@ -37,9 +37,9 @@ export function GlassCard({
         'bg-white/[0.05] backdrop-blur-xl',
         'border border-white/[0.1]',
         'transition-all duration-300',
-        hover && 'hover:border-violet-500/40 hover:shadow-[0_0_30px_rgba(124,58,237,0.15)]',
-        glow && 'shadow-[0_0_30px_rgba(124,58,237,0.2)]',
-        gradient && 'bg-gradient-to-br from-violet-500/10 via-blue-500/5 to-cyan-500/10',
+        hover && 'hover:border-white/30 hover:shadow-[0_4px_24px_rgba(0,0,0,0.4)]',
+        glow && 'shadow-[0_4px_24px_rgba(0,0,0,0.5)]',
+        gradient && 'bg-white/[0.02]',
         paddingMap[padding],
         className
       )}

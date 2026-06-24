@@ -11,7 +11,7 @@ import { ApiResponse } from '@/types/apiResponse'
 import { toast } from 'react-hot-toast'
 import { MessageCard } from '@/components/MessageCard'
 import { Button } from '@/components/ui/button'
-import { Loader2, RefreshCcw } from 'lucide-react'
+import { Loader2, RefreshCcw, Link as LinkIcon, Inbox, BarChart3, Settings, ShieldAlert } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { Separator } from '@/components/ui/separator'
 import { useRouter } from 'next/navigation'
@@ -19,6 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import gsap from 'gsap'
+import { cn } from '@/lib/utils'
 
 const Page = () => {
   const [messages, setMessages] = useState<Message[]>([])
@@ -34,17 +35,17 @@ const Page = () => {
     if (containerRef.current) {
       gsap.fromTo(
         containerRef.current.children,
-        { y: 40, opacity: 0 },
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
-          stagger: 0.15,
+          duration: 0.6,
+          stagger: 0.1,
           ease: 'power3.out',
         }
       )
     }
-  }, [])
+  }, [status])
 
   const form = useForm({
     resolver: zodResolver(accpectMessageSchema),
@@ -64,7 +65,7 @@ const Page = () => {
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       console.error(axiosError)
-      toast.error('Cannot fetch messages')
+      toast.error('Cannot fetch message acceptance settings')
     } finally {
       setIsSwitchLoading(false)
     }
@@ -101,11 +102,11 @@ const Page = () => {
 
   const handleSwitching = async () => {
     try {
-      const response = await axios.post<ApiResponse>('/api/accpect-message', {
+      await axios.post<ApiResponse>('/api/accpect-message', {
         accpectMessage: !accpectMessage,
       })
       setValue('accpectMessage', !accpectMessage)
-      toast.success(response.data.message)
+      toast.success(accpectMessage ? 'Message collection paused' : 'Message collection active')
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       console.error(axiosError)
@@ -114,11 +115,16 @@ const Page = () => {
   }
 
   if (status === 'loading') {
-    return <div className="text-center py-10 text-white">Loading...</div>
+    return (
+      <div className="min-h-screen w-full bg-[#090909] text-[#FAFAFA] flex items-center justify-center font-mono">
+        <Loader2 className="h-6 w-6 animate-spin text-white mr-2" />
+        LOADING VIEWPORT...
+      </div>
+    )
   }
 
   if (status === 'unauthenticated') {
-    return null // Redirect is handled in useEffect
+    return null
   }
 
   const { username } = session?.user || {}
@@ -128,149 +134,216 @@ const Page = () => {
 
   const copyClipBoard = () => {
     navigator.clipboard.writeText(profileUrl)
-    toast.success('Copied Successfully')
+    toast.success('Link copied successfully')
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-black via-slate-950 to-[#05060a] text-white px-4 lg:px-8 py-10 pt-28">
+    <div className="min-h-screen w-full bg-[#090909] text-[#FAFAFA] px-4 lg:px-8 py-10 pt-28 relative">
+      {/* Background grid pattern */}
+      <div className="absolute inset-0 bg-grid opacity-[0.12] pointer-events-none" />
 
-      <div ref={containerRef} className="max-w-6xl mx-auto space-y-8">
-        <div className="flex flex-col gap-3">
-          <p className="text-sm uppercase tracking-[0.25em] text-emerald-200/80">Dashboard</p>
-          <h1 className="text-4xl md:text-5xl font-black leading-tight">
-            Hey {username}, your feedback HQ is ready.
+      <div ref={containerRef} className="max-w-6xl mx-auto space-y-10 relative z-10">
+        
+        {/* Dashboard Header */}
+        <div className="flex flex-col gap-2.5">
+          <p className="text-xs uppercase tracking-[0.25em] text-gray-400 font-mono">Feedback HQ</p>
+          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-white">
+            Overview
           </h1>
-          <p className="text-gray-300 max-w-3xl">
-            Share your link, manage incoming notes, and stay fully in control of what reaches you.
+          <p className="text-gray-400 max-w-2xl leading-relaxed">
+            At-a-glance inbox statistics, quick sharing widgets, and real-time incoming cards.
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          <Card className="border border-white/10 bg-white/5 backdrop-blur-xl rounded-2xl">
-            <CardHeader>
-              <CardTitle className="text-lg text-gray-100">Your public link</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-3">
+        {/* Top Metrics Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Card 1: Total Feedback */}
+          <Card className="border border-[#232323] bg-[#111111] rounded-2xl shadow-sm p-5 flex flex-col justify-between min-h-[130px]">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-mono flex items-center gap-1.5">
+              <Inbox className="h-3.5 w-3.5" />
+              Total Feedback
+            </span>
+            <div className="flex items-baseline justify-between mt-auto">
+              <span className="text-3xl font-semibold text-white tracking-tight">{messageCount}</span>
+              <span className="text-xs font-mono text-gray-500">CARDS</span>
+            </div>
+          </Card>
+
+          {/* Card 2: Status */}
+          <Card className="border border-[#232323] bg-[#111111] rounded-2xl shadow-sm p-5 flex flex-col justify-between min-h-[130px]">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-mono">
+              Collection Status
+            </span>
+            <div className="flex items-center gap-2 mt-auto">
+              <span className={cn(
+                "h-2 w-2 rounded-full",
+                accpectMessage ? "bg-white animate-pulse" : "bg-gray-600"
+              )} />
+              <span className="text-lg font-medium text-white tracking-tight">
+                {accpectMessage ? 'Active' : 'Paused'}
+              </span>
+            </div>
+          </Card>
+
+          {/* Card 3: Link Share */}
+          <Card className="border border-[#232323] bg-[#111111] rounded-2xl shadow-sm p-5 flex flex-col justify-between min-h-[130px]">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-mono flex items-center gap-1.5">
+              <LinkIcon className="h-3.5 w-3.5" />
+              Share Link
+            </span>
+            <div className="flex gap-2 items-center mt-auto w-full">
               <input
                 type="text"
                 value={profileUrl}
                 disabled
-                className="w-full rounded-lg border border-white/15 bg-black/40 backdrop-blur px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="flex-1 min-w-0 rounded-lg border border-[#232323] bg-[#090909] px-2 py-1.5 text-[10px] text-gray-400 select-all cursor-not-allowed font-mono truncate"
               />
               <Button
                 onClick={copyClipBoard}
-                variant="secondary"
-                className="bg-gradient-to-r from-violet-400 to-cyan-500 text-white font-semibold hover:shadow-[0_0_16px_rgba(16,185,129,0.35)]"
+                size="sm"
+                className="bg-white text-black hover:bg-white/90 font-medium transition-colors rounded-lg text-[10px] px-2.5 py-1.5 h-auto shrink-0"
               >
-                Copy link
+                Copy
               </Button>
-            </CardContent>
+            </div>
           </Card>
 
-          <Card className="border border-white/10 bg-white/5 backdrop-blur-xl rounded-2xl">
-            <CardContent className="flex items-center justify-between py-6">
-              <div>
-                <Label className="text-lg font-semibold text-gray-100">Accept messages</Label>
-                <p className="text-sm text-gray-400">
-                  Toggle to allow or block incoming anonymous messages.
-                </p>
-              </div>
+          {/* Card 4: Action Toggle */}
+          <Card className="border border-[#232323] bg-[#111111] rounded-2xl shadow-sm p-5 flex flex-col justify-between min-h-[130px]">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-mono flex items-center gap-1.5">
+              <Settings className="h-3.5 w-3.5" />
+              Quick Toggle
+            </span>
+            <div className="flex items-center justify-between mt-auto">
+              <span className="text-xs text-gray-400 font-mono">Accepting</span>
               <Switch
                 {...register('accpectMessage')}
                 checked={accpectMessage}
                 onCheckedChange={handleSwitching}
                 disabled={isSwitchLoading}
               />
-            </CardContent>
+            </div>
           </Card>
+        </div>
 
-          <Card className="border border-white/10 bg-white/5 backdrop-blur-xl rounded-2xl">
-            <CardContent className="grid grid-cols-2 gap-3 py-6">
-              <div className="rounded-xl border border-white/10 bg-black/40 p-3">
-                <p className="text-xs uppercase tracking-wide text-gray-400">Messages</p>
-                <p className="text-2xl font-bold text-white">{messageCount}</p>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-black/40 p-3">
-                <p className="text-xs uppercase tracking-wide text-gray-400">Status</p>
-                <p className="text-lg font-semibold text-emerald-300">
-                  {accpectMessage ? 'Accepting' : 'Paused'}
+        {/* Dashboard Split View */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          
+          {/* Left Main column - Inbox cards */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="flex items-center justify-between border-b border-[#232323] pb-4">
+              <div className="space-y-1">
+                <h2 className="text-2xl font-semibold text-white flex items-center gap-2">
+                  <Inbox className="h-5 w-5 text-gray-400" />
+                  Real-time Feed
+                </h2>
+                <p className="text-xs text-gray-400">
+                  {messageCount > 0 ? `${messageCount} feedback messages received` : 'Waiting for incoming feedback...'}
                 </p>
               </div>
-              <Button
-                className="col-span-2 bg-gradient-to-r from-violet-400 to-cyan-500 text-white font-semibold hover:shadow-[0_0_16px_rgba(16,185,129,0.35)]"
-                onClick={(e) => {
-                  e.preventDefault()
-                  fetchMessage(true)
-                }}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Refreshing...
-                  </>
-                ) : (
-                  <>
-                    <RefreshCcw className="mr-2 h-4 w-4" />
-                    Refresh inbox
-                  </>
-                )}
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Separator className="bg-white/10" />
-
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold">Recent messages</h2>
-              <p className="text-sm text-gray-400">
-                {messageCount > 0
-                  ? 'Delete what you do not need and keep the rest.'
-                  : 'Share your link to start receiving messages.'}
-              </p>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="bg-[#111111] border border-[#232323] text-white hover:bg-white/[0.04] rounded-xl"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        fetchMessage(true)
+                      }}
+                    >
+                      {loading ? (
+                        <Loader2 className="h-4 w-4 animate-spin text-white" />
+                      ) : (
+                        <RefreshCcw className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-[#111111] border border-[#232323] text-white font-mono text-xs">REFRESH FEED</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="bg-black border-white/15 text-white hover:shadow-[0_0_14px_rgba(16,185,129,0.35)] rounded-full"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      fetchMessage(true)
-                    }}
-                  >
-                    {loading ? (
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                    ) : (
-                      <RefreshCcw className="h-5 w-5" />
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Refresh messages</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {messages.length > 0 ? (
+                messages.map((message) => (
+                  <MessageCard
+                    key={message._id as string}
+                    message={message}
+                    onMessageDelete={handleDelete}
+                  />
+                ))
+              ) : (
+                <div className="col-span-full text-center py-20 text-gray-500 bg-[#111111] border border-[#232323] rounded-2xl flex flex-col items-center justify-center gap-2.5">
+                  <Inbox className="h-8 w-8 text-gray-600" />
+                  <p className="font-medium text-gray-300">No cards in feed yet</p>
+                  <p className="text-xs text-gray-500 max-w-sm leading-relaxed px-4">
+                    Your anonymous inbox is ready to receive feedback. Share your public link on your social profiles to start collecting insights.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {messages.length > 0 ? (
-              messages.map((message) => (
-                <MessageCard
-                  key={message._id as string}
-                  message={message}
-                  onMessageDelete={handleDelete}
-                />
-              ))
-            ) : (
-              <div className="col-span-full text-center py-12 text-gray-400 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl">
-                No messages yet — share your link to invite feedback.
-              </div>
-            )}
+          {/* Right sidebar column - Insights */}
+          <div className="space-y-6">
+            <Card className="border border-[#232323] bg-[#111111] rounded-2xl shadow-sm">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs font-semibold text-gray-400 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                  <BarChart3 className="h-4 w-4" />
+                  Sentiment Analysis
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6 pt-2">
+                <div>
+                  <div className="flex justify-between items-end mb-2 text-xs">
+                    <span className="text-gray-400">Main Tag: UI/UX</span>
+                    <span className="font-mono text-white">45%</span>
+                  </div>
+                  <div className="h-1 w-full bg-[#090909] border border-[#232323] rounded-full overflow-hidden">
+                    <div className="h-full bg-white w-[45%]" />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between items-end mb-2 text-xs">
+                    <span className="text-gray-400">Main Tag: Performance</span>
+                    <span className="font-mono text-white">30%</span>
+                  </div>
+                  <div className="h-1 w-full bg-[#090909] border border-[#232323] rounded-full overflow-hidden">
+                    <div className="h-full bg-white/50 w-[30%]" />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between items-end mb-2 text-xs">
+                    <span className="text-gray-400">Main Tag: Suggestions</span>
+                    <span className="font-mono text-white">25%</span>
+                  </div>
+                  <div className="h-1 w-full bg-[#090909] border border-[#232323] rounded-full overflow-hidden">
+                    <div className="h-full bg-white/20 w-[25%]" />
+                  </div>
+                </div>
+
+                <div className="border-t border-[#232323] pt-4">
+                  <div className="flex items-center justify-between text-xs font-mono text-gray-400 mb-3">
+                    <span>WEEKLY SENTIMENT TREND</span>
+                    <span className="text-white font-medium">96% POSITIVE</span>
+                  </div>
+                  <div className="h-20 w-full flex items-end gap-1.5 justify-between px-2 pt-2">
+                    <div className="w-1/6 bg-[#232323] h-[35%] rounded hover:bg-white/20 transition-colors" title="Monday" />
+                    <div className="w-1/6 bg-[#232323] h-[55%] rounded hover:bg-white/20 transition-colors" title="Tuesday" />
+                    <div className="w-1/6 bg-[#232323] h-[30%] rounded hover:bg-white/20 transition-colors" title="Wednesday" />
+                    <div className="w-1/6 bg-[#232323] h-[65%] rounded hover:bg-white/20 transition-colors" title="Thursday" />
+                    <div className="w-1/6 bg-[#232323] h-[80%] rounded hover:bg-white/20 transition-colors" title="Friday" />
+                    <div className="w-1/6 bg-white h-[95%] rounded" title="Saturday" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
+
         </div>
+
       </div>
     </div>
   )

@@ -1,85 +1,82 @@
-"use client";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
-import { GradientButton } from "@/components/ui/GradientButton";
-import { AnimatedContainer, AnimatedItem } from "@/components/ui/AnimatedContainer";
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { ArrowRight, Bolt, Lock, Shield } from 'lucide-react';
+import { GradientButton } from '@/components/ui/GradientButton';
+import FeedbackLoopAnimation from './FeedbackLoopAnimation';
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[85vh] flex items-center">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 w-full py-16 md:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <section className="relative min-h-[90vh] flex items-center pt-24 pb-16 overflow-hidden">
+      
+      <div className="absolute inset-0 bg-grid opacity-[0.15] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 w-full relative z-10">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
           
-          <AnimatedContainer variant="stagger">
-            <AnimatedItem>
-              <span className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1 text-xs uppercase tracking-widest text-violet-300 mb-6">
-                <Sparkles className="h-3 w-3" />
-                Anonymous feedback platform
-              </span>
-            </AnimatedItem>
-
-            <AnimatedItem>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-                Honest feedback, <br />
-                <span className="gradient-text">zero friction.</span>
-              </h1>
-            </AnimatedItem>
-
-            <AnimatedItem>
-              <p className="text-gray-400 text-sm sm:text-base max-w-lg mb-8">
-                Feedbackly lets you collect anonymous feedback with a beautiful dashboard.
-                Share your link, receive honest messages, and grow with real insights.
-              </p>
-            </AnimatedItem>
-
-            <AnimatedItem>
-              <div className="flex flex-wrap gap-3">
-                <Link href="/sign-up">
-                  <GradientButton size="lg">
-                    Get Started
-                    <ArrowRight className="h-4 w-4" />
-                  </GradientButton>
-                </Link>
-
-                <Link href="/sign-in">
-                  <GradientButton variant="secondary" size="lg">
-                    Go to Dashboard
-                  </GradientButton>
-                </Link>
-              </div>
-            </AnimatedItem>
-          </AnimatedContainer>
-
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="relative"
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col gap-8"
           >
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-violet-500/20 via-blue-500/10 to-cyan-500/20 blur-3xl" />
+            <div className="space-y-4">
+              <span className="inline-flex items-center gap-2 rounded-lg border border-[#232323] bg-[#111111] px-3.5 py-1 text-xs font-medium uppercase tracking-[0.15em] text-gray-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                Precision minimal loops
+              </span>
 
-            <div className="relative rounded-3xl glass border border-white/[0.12] p-6">
-              <div className="space-y-4">
-                <div className="bg-white/[0.05] border border-white/[0.08] rounded-xl p-4">
-                  <p className="text-sm text-gray-300">
-                    "Your UI is amazing but mobile version needs improvement."
-                  </p>
-                </div>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white leading-[1.05]">
+                Every Customer Idea. <br />
+                <span className="text-[#E2E2E2]">One Place.</span>
+              </h1>
+            </div>
 
-                <div className="bg-white/[0.05] border border-white/[0.08] rounded-xl p-4">
-                  <p className="text-sm text-gray-300">
-                    "I love this platform, super clean and easy to use."
-                  </p>
-                </div>
+            <p className="text-gray-400 text-base sm:text-lg max-w-lg leading-relaxed">
+              Collect, review, and act on anonymous feedback without losing valuable customer insights. Simple, clean, and completely private by design.
+            </p>
 
-                <div className="bg-white/[0.05] border border-white/[0.08] rounded-xl p-4">
-                  <p className="text-sm text-gray-300">
-                    "Add analytics and charts feature!"
-                  </p>
-                </div>
+            <div className="flex flex-wrap gap-4">
+              <Link href="/sign-up">
+                <GradientButton variant="primary" size="lg">
+                  Start Collecting Feedback
+                  <ArrowRight className="h-4 w-4 ml-1" />
+                </GradientButton>
+              </Link>
+
+              <Link href="/#features">
+                <GradientButton variant="secondary" size="lg">
+                  Explore Features
+                </GradientButton>
+              </Link>
+            </div>
+
+            <div className="flex flex-wrap gap-x-8 gap-y-4 pt-8 border-t border-[#232323] text-sm text-gray-400">
+              <div className="flex items-center gap-2">
+                <Bolt className="h-4 w-4 text-gray-400" />
+                <span>Real-time Inbox</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Lock className="h-4 w-4 text-gray-400" />
+                <span>Complete Anonymity</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Shield className="h-4 w-4 text-gray-400" />
+                <span>Toggle Controls</span>
               </div>
             </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            className="w-full relative"
+          >
+          
+            <FeedbackLoopAnimation />
           </motion.div>
 
         </div>

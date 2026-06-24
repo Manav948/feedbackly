@@ -41,38 +41,49 @@ const Page = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-[#0b0d11] text-white flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#090909] text-[#FAFAFA] flex items-center justify-center px-4">
+      {/* Background grid pattern */}
+      <div className="absolute inset-0 bg-grid opacity-[0.15] pointer-events-none" />
 
-      <div className="w-full max-w-7xl grid lg:grid-cols-2 gap-10 items-center">
+      <div className="w-full max-w-7xl grid lg:grid-cols-2 gap-16 items-center relative z-10">
         <div className="space-y-6 hidden lg:block">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200">
-            Secure access
+          <span className="inline-flex items-center gap-2 rounded-lg border border-[#232323] bg-[#111111] px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
+            Secure Access
           </span>
 
-          <h1 className="text-4xl font-extrabold leading-tight">
+          <h1 className="text-4xl font-semibold tracking-tight text-white leading-tight">
             Welcome back to your feedback desk.
           </h1>
 
-          <p className="text-gray-300">
+          <p className="text-gray-400">
             Sign in to view your inbox, control who can reach you, and keep the conversation moving.
           </p>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
-            <h3 className="text-lg font-semibold mb-3">Why people love Feedbackly</h3>
-            <ul className="space-y-2 text-gray-300 text-sm">
-              <li>• Anonymous messages without the chaos.</li>
-              <li>• One-click pause and delete controls.</li>
-              <li>• Clean, distraction-free inbox view.</li>
+          <div className="rounded-2xl border border-[#232323] bg-[#111111] p-6">
+            <h3 className="text-lg font-medium text-white mb-4">Why creators use Feedbackly</h3>
+            <ul className="space-y-3.5 text-gray-400 text-sm">
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                Anonymous messages without the clutter.
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                One-click pause and play controls.
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                Clean, distraction-free inbox view.
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="w-full max-w-md mx-auto">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 md:p-8 shadow-2xl backdrop-blur-xl">
+          <div className="rounded-2xl border border-[#232323] bg-[#111111] p-6 md:p-8 shadow-2xl">
             
             <div className="mb-6 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold">Sign in</h2>
-              <p className="text-gray-400 text-sm">
+              <h2 className="text-2xl font-semibold text-white">Sign in</h2>
+              <p className="text-gray-400 text-sm mt-1">
                 Enter your credentials to continue
               </p>
             </div>
@@ -85,10 +96,10 @@ const Page = () => {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email or username</FormLabel>
+                      <FormLabel className="text-gray-300">Email or username</FormLabel>
                       <Input
                         {...field}
-                        className="bg-black/40 border border-white/15 text-white"
+                        className="bg-[#090909] border border-[#232323] text-white focus:border-white/40 focus:ring-0 rounded-xl"
                       />
                       <FormMessage />
                     </FormItem>
@@ -100,11 +111,11 @@ const Page = () => {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel className="text-gray-300">Password</FormLabel>
                       <Input
                         type="password"
                         {...field}
-                        className="bg-black/40 border border-white/15 text-white"
+                        className="bg-[#090909] border border-[#232323] text-white focus:border-white/40 focus:ring-0 rounded-xl"
                       />
                       <FormMessage />
                     </FormItem>
@@ -112,7 +123,7 @@ const Page = () => {
                 />
 
                 <Button
-                  className="w-full  bg-gradient-to-br from-violet-500/20 via-blue-500/10 to-cyan-500/20 text-white font-semibold"
+                  className="w-full bg-white text-black hover:bg-white/90 font-semibold transition-colors mt-2"
                   type="submit"
                 >
                   Sign In
@@ -123,7 +134,7 @@ const Page = () => {
             <div className="text-center mt-6">
               <p className="text-gray-400 text-sm">
                 New to Feedbackly?{' '}
-                <Link href="/sign-up" className="text-violet-500 hover:text-violet-600 font-medium">
+                <Link href="/sign-up" className="text-white hover:underline font-medium">
                   Create an account
                 </Link>
               </p>

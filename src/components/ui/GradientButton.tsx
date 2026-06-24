@@ -31,11 +31,11 @@ export function GradientButton({
   };
 
   const variantMap = {
-    primary: 'bg-gradient-to-r from-violet-600 via-blue-500 to-cyan-500 text-white font-semibold hover:shadow-[0_0_30px_rgba(124,58,237,0.5)] hover:from-violet-500 hover:via-blue-400 hover:to-cyan-400',
-    secondary: 'bg-white/[0.08] border border-white/[0.15] text-white hover:bg-white/[0.12] hover:border-violet-400/40',
-    outline: 'bg-transparent border border-violet-500/50 text-violet-300 hover:bg-violet-500/10 hover:border-violet-400',
-    ghost: 'bg-transparent text-gray-300 hover:text-white hover:bg-white/[0.06]',
-    danger: 'bg-gradient-to-r from-red-600 to-rose-500 text-white font-semibold hover:shadow-[0_0_25px_rgba(239,68,68,0.4)]',
+    primary: 'bg-white text-black font-semibold hover:bg-white/90 shadow-[0_2px_8px_rgba(255,255,255,0.15)]',
+    secondary: 'bg-[#111111] border border-[#232323] text-white hover:bg-white/[0.04]',
+    outline: 'bg-transparent border border-[#232323] text-gray-300 hover:text-white hover:bg-white/[0.04] hover:border-white/20',
+    ghost: 'bg-transparent text-gray-400 hover:text-white hover:bg-white/[0.06]',
+    danger: 'bg-red-950/40 border border-red-900/50 text-red-400 font-semibold hover:bg-red-900/20 hover:text-red-300',
   };
 
   return (
@@ -50,7 +50,7 @@ export function GradientButton({
         'relative inline-flex items-center justify-center gap-2',
         'font-medium transition-all duration-300',
         'disabled:opacity-50 disabled:cursor-not-allowed',
-        'select-none outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50',
+        'select-none outline-none focus-visible:ring-2 focus-visible:ring-white/30',
         sizeMap[size],
         variantMap[variant],
         className

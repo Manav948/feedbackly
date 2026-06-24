@@ -64,43 +64,50 @@ const Page = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-[#0b0d11] text-white flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#090909] text-[#FAFAFA] flex items-center justify-center px-4">
+      {/* Background grid pattern */}
+      <div className="absolute inset-0 bg-grid opacity-[0.15] pointer-events-none" />
 
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute right-10 top-16 h-64 w-64 rounded-full bg-emerald-500/20 blur-[120px]" />
-        <div className="absolute left-8 bottom-10 h-64 w-64 rounded-full bg-cyan-500/15 blur-[120px]" />
-      </div>
-
-      <div className="w-full max-w-7xl grid lg:grid-cols-2 gap-10 items-center">
+      <div className="w-full max-w-7xl grid lg:grid-cols-2 gap-16 items-center relative z-10">
 
         <div className="space-y-6 hidden lg:block">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200">
+          <span className="inline-flex items-center gap-2 rounded-lg border border-[#232323] bg-[#111111] px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
             Create your link
           </span>
 
-          <h1 className="text-4xl font-extrabold leading-tight">
-            Join Feedbackly and get an anonymous inbox.
+          <h1 className="text-4xl font-semibold tracking-tight text-white leading-tight">
+            Join Feedbackly and get your anonymous inbox.
           </h1>
 
-          <p className="text-gray-300">
-            Choose a username, share your link, and start collecting honest feedback.
+          <p className="text-gray-400">
+            Choose a username, share your unique link, and start collecting honest feedback.
           </p>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
-            <h3 className="text-lg font-semibold mb-3">You'll be able to:</h3>
-            <ul className="space-y-2 text-gray-300 text-sm">
-              <li>• Toggle new messages on/off anytime.</li>
-              <li>• Delete messages instantly.</li>
-              <li>• Share your unique link.</li>
+          <div className="rounded-2xl border border-[#232323] bg-[#111111] p-6">
+            <h3 className="text-lg font-medium text-white mb-4">You'll be able to:</h3>
+            <ul className="space-y-3.5 text-gray-400 text-sm">
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                Toggle new messages on/off anytime.
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                Delete unwanted messages instantly.
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                Share your public link in one click.
+              </li>
             </ul>
           </div>
         </div>
+
         <div className="w-full max-w-md mx-auto">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 md:p-8 shadow-2xl backdrop-blur-xl">
+          <div className="rounded-2xl border border-[#232323] bg-[#111111] p-6 md:p-8 shadow-2xl">
             
             <div className="mb-6 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold">Create account</h2>
-              <p className="text-gray-400 text-sm">
+              <h2 className="text-2xl font-semibold text-white">Create account</h2>
+              <p className="text-gray-400 text-sm mt-1">
                 Start collecting anonymous feedback today
               </p>
             </div>
@@ -113,17 +120,17 @@ const Page = () => {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Username</FormLabel>
+                      <FormLabel className="text-gray-300">Username</FormLabel>
                       <Input
                         {...field}
                         onChange={(e) => {
                           field.onChange(e)
                           setUsername(e.target.value)
                         }}
-                        className="bg-black/40 border border-white/15 text-white"
+                        className="bg-[#090909] border border-[#232323] text-white focus:border-white/40 focus:ring-0 rounded-xl"
                       />
                       {userMessage && (
-                        <p className={`text-xs ${userMessage.includes('available') ? 'text-emerald-300' : 'text-red-400'}`}>
+                        <p className={`text-xs mt-1 ${userMessage.includes('available') ? 'text-gray-300 font-medium' : 'text-red-400'}`}>
                           {userMessage}
                         </p>
                       )}
@@ -137,11 +144,11 @@ const Page = () => {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel className="text-gray-300">Email</FormLabel>
                       <Input
                         {...field}
                         type="email"
-                        className="bg-black/40 border border-white/15 text-white"
+                        className="bg-[#090909] border border-[#232323] text-white focus:border-white/40 focus:ring-0 rounded-xl"
                       />
                       <FormMessage />
                     </FormItem>
@@ -153,11 +160,11 @@ const Page = () => {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel className="text-gray-300">Password</FormLabel>
                       <Input
                         type="password"
                         {...field}
-                        className="bg-black/40 border border-white/15 text-white"
+                        className="bg-[#090909] border border-[#232323] text-white focus:border-white/40 focus:ring-0 rounded-xl"
                       />
                       <FormMessage />
                     </FormItem>
@@ -166,12 +173,12 @@ const Page = () => {
 
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-br from-violet-500/20 via-blue-500/10 to-cyan-500/20 text-white font-semibold"
+                  className="w-full bg-white text-black hover:bg-white/90 font-semibold transition-colors mt-2"
                   disabled={loading}
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin text-black" />
                       Creating account...
                     </>
                   ) : (
@@ -185,7 +192,7 @@ const Page = () => {
             <div className="text-center mt-6">
               <p className="text-gray-400 text-sm">
                 Already have an account?{' '}
-                <Link href="/sign-in" className="text-violet-500 hover:text-violet-600 font-medium">
+                <Link href="/sign-in" className="text-white hover:underline font-medium">
                   Sign in
                 </Link>
               </p>

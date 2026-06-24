@@ -8,7 +8,7 @@ interface BlobProps {
   delay?: number;
 }
 
-function Blob({ className = '', color = 'rgba(124, 58, 237, 0.25)', size = '500px', delay = 0 }: BlobProps) {
+function Blob({ className = '', color = 'rgba(255, 255, 255, 0.015)', size = '500px', delay = 0 }: BlobProps) {
   return (
     <div
       className={`pointer-events-none absolute rounded-full blur-[120px] ${className}`}
@@ -30,33 +30,27 @@ interface AnimatedBackgroundProps {
 export function AnimatedBackground({ variant = 'default', showGrid = false }: AnimatedBackgroundProps) {
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0B0F1A] via-[#0D1425] to-[#080B14]" />
+      <div className="absolute inset-0 bg-[#090909]" />
 
       {variant === 'default' && (
         <>
           <Blob
             className="blob-animation -left-32 -top-32"
-            color="rgba(124, 58, 237, 0.2)"
+            color="rgba(255, 255, 255, 0.015)"
             size="600px"
             delay={0}
           />
           <Blob
             className="blob-animation right-0 top-1/4"
-            color="rgba(59, 130, 246, 0.15)"
+            color="rgba(255, 255, 255, 0.01)"
             size="500px"
             delay={2}
           />
           <Blob
             className="blob-animation bottom-0 left-1/3"
-            color="rgba(6, 182, 212, 0.12)"
+            color="rgba(255, 255, 255, 0.008)"
             size="400px"
             delay={4}
-          />
-          <Blob
-            className="blob-animation right-1/4 bottom-1/4"
-            color="rgba(236, 72, 153, 0.1)"
-            size="350px"
-            delay={1}
           />
         </>
       )}
@@ -65,21 +59,15 @@ export function AnimatedBackground({ variant = 'default', showGrid = false }: An
         <>
           <Blob
             className="blob-animation -right-24 -top-24"
-            color="rgba(124, 58, 237, 0.25)"
+            color="rgba(255, 255, 255, 0.015)"
             size="450px"
             delay={0}
           />
           <Blob
             className="blob-animation -left-24 bottom-0"
-            color="rgba(6, 182, 212, 0.18)"
+            color="rgba(255, 255, 255, 0.01)"
             size="400px"
             delay={3}
-          />
-          <Blob
-            className="blob-animation left-1/2 top-1/2"
-            color="rgba(236, 72, 153, 0.08)"
-            size="300px"
-            delay={1.5}
           />
         </>
       )}
@@ -88,21 +76,15 @@ export function AnimatedBackground({ variant = 'default', showGrid = false }: An
         <>
           <Blob
             className="blob-animation -left-40 top-0"
-            color="rgba(124, 58, 237, 0.18)"
+            color="rgba(255, 255, 255, 0.012)"
             size="700px"
             delay={0}
           />
           <Blob
             className="blob-animation right-0 -top-20"
-            color="rgba(59, 130, 246, 0.12)"
+            color="rgba(255, 255, 255, 0.008)"
             size="600px"
             delay={2.5}
-          />
-          <Blob
-            className="blob-animation left-1/2 bottom-0"
-            color="rgba(6, 182, 212, 0.1)"
-            size="500px"
-            delay={5}
           />
         </>
       )}
@@ -111,24 +93,18 @@ export function AnimatedBackground({ variant = 'default', showGrid = false }: An
         <>
           <Blob
             className="blob-animation left-1/4 top-1/4"
-            color="rgba(124, 58, 237, 0.1)"
+            color="rgba(255, 255, 255, 0.005)"
             size="400px"
             delay={0}
-          />
-          <Blob
-            className="blob-animation right-1/4 bottom-1/4"
-            color="rgba(59, 130, 246, 0.08)"
-            size="350px"
-            delay={3}
           />
         </>
       )}
 
       {showGrid && (
-        <div className="absolute inset-0 bg-grid opacity-40" />
+        <div className="absolute inset-0 bg-grid opacity-30" />
       )}
 
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(11,15,26,0.8)_100%)] overflow-hidden" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(9,9,9,0.9)_100%)] overflow-hidden" />
     </div>
   );
 }

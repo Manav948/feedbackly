@@ -35,7 +35,7 @@ export function MobileBottomNav() {
               className={cn(
                 'p-3 rounded-xl transition-all',
                 isActive
-                  ? 'bg-gradient-to-br from-violet-600 to-cyan-500 text-white'
+                  ? 'bg-white text-black'
                   : 'text-gray-400'
               )}
             >

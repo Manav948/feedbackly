@@ -55,58 +55,54 @@ const Page = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-[#0b0d11] text-white">
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute right-10 top-16 h-60 w-60 rounded-full bg-emerald-500/20 blur-[120px]" />
-        <div className="absolute left-8 bottom-10 h-60 w-60 rounded-full bg-fuchsia-500/15 blur-[120px]" />
-      </div>
+    <div className="min-h-screen bg-[#090909] text-[#FAFAFA] flex items-center justify-center px-4 relative">
+      {/* Background grid pattern */}
+      <div className="absolute inset-0 bg-grid opacity-[0.15] pointer-events-none" />
 
-      <div className="flex items-center justify-center px-4 py-14">
-        <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
-          <h1 className="text-3xl font-extrabold text-center text-white mb-2">
-            Verify your email
-          </h1>
-          <p className="text-gray-400 text-center mb-6">
-            Enter the 6-digit code we sent to your inbox to activate your link.
-          </p>
+      <div className="w-full max-w-lg rounded-2xl border border-[#232323] bg-[#111111] p-8 shadow-2xl relative z-10">
+        <h1 className="text-3xl font-semibold tracking-tight text-center text-white mb-2">
+          Verify your email
+        </h1>
+        <p className="text-gray-400 text-center text-sm mb-6">
+          Enter the 6-digit code we sent to your inbox to activate your link.
+        </p>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onsubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="code"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-200">Verification code</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="000000"
-                        {...field}
-                        className="bg-black/40 border border-white/15 text-white placeholder-gray-500 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/40"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-400" />
-                  </FormItem>
-                )}
-              />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onsubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="code"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-300">Verification code</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="000000"
+                      {...field}
+                      className="bg-[#090909] border border-[#232323] text-white placeholder-gray-500 focus:border-white/40 focus:ring-0 rounded-xl"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-400" />
+                </FormItem>
+              )}
+            />
 
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-emerald-400 to-cyan-500 text-black font-semibold hover:shadow-[0_0_20px_rgba(16,185,129,0.35)]"
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Verifying...
-                  </>
-                ) : (
-                  'Confirm code'
-                )}
-              </Button>
-            </form>
-          </Form>
-        </div>
+            <Button
+              type="submit"
+              className="w-full bg-white text-black hover:bg-white/90 font-semibold transition-colors mt-2"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin text-black" />
+                  Verifying...
+                </>
+              ) : (
+                'Confirm code'
+              )}
+            </Button>
+          </form>
+        </Form>
       </div>
     </div>
   )

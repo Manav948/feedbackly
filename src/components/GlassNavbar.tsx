@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, Zap, ChevronDown, LogOut, User, Settings, Menu, X } from 'lucide-react';
+import { MessageSquare, Zap, ChevronDown, LogOut, Menu, X } from 'lucide-react';
 import type { User as NextAuthUser } from 'next-auth';
 import { GradientButton } from './ui/GradientButton';
 
@@ -33,16 +33,16 @@ export function GlassNavbar() {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-[70] transition-all duration-500 ${
           scrolled
-            ? 'bg-[#0B0F1A]/80 backdrop-blur-2xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.3)]'
+            ? 'bg-[#090909]/80 backdrop-blur-2xl border-b border-[#232323] shadow-lg'
             : 'bg-transparent'
         }`}
       >
         <div className="mx-auto flex items-center justify-between px-4 md:px-8 h-16">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="relative h-8 w-8 rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.5)] group-hover:shadow-[0_0_25px_rgba(124,58,237,0.7)] transition-all duration-300">
-              <MessageSquare className="h-4 w-4 text-white" />
+            <div className="relative h-8 w-8 rounded-xl bg-white flex items-center justify-center shadow-sm">
+              <MessageSquare className="h-4 w-4 text-black" />
             </div>
-            <span className="text-lg font-bold font-[family-name:var(--font-poppins)] gradient-text tracking-tight">
+            <span className="text-lg font-bold font-[family-name:var(--font-poppins)] text-white tracking-tight">
               Feedbackly
             </span>
           </Link>
@@ -55,7 +55,7 @@ export function GlassNavbar() {
                 className="text-sm text-gray-400 hover:text-white transition-colors duration-200 relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gradient-to-r from-violet-500 to-cyan-500 group-hover:w-full transition-all duration-300" />
+                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-white/40 group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
           </div>
@@ -65,9 +65,9 @@ export function GlassNavbar() {
               <div className="relative">
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
-                  className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl glass border border-white/10 hover:border-violet-500/40 transition-all duration-200 group"
+                  className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-[#111111] border border-[#232323] hover:border-white/20 transition-all duration-200 group"
                 >
-                  <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-violet-600 to-cyan-500 flex items-center justify-center text-xs font-bold text-white">
+                  <div className="h-7 w-7 rounded-lg bg-[#232323] flex items-center justify-center text-xs font-bold text-white">
                     {(user?.username || user?.email || 'U')[0].toUpperCase()}
                   </div>
                   <span className="text-sm text-gray-300 max-w-[120px] truncate">
@@ -83,16 +83,16 @@ export function GlassNavbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-full mt-2 w-52 rounded-2xl  border border-white/12 shadow-[0_20px_60px_rgba(0,0,0,0.4)] overflow-hidden"
+                      className="absolute right-0 top-full mt-2 w-52 rounded-2xl bg-[#111111] border border-[#232323] shadow-2xl overflow-hidden"
                     >
                       <div className="p-1.5">
-                        <Link href="/dashboard" className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-gray-300 hover:text-white hover:bg-white/[0.06] transition-colors" onClick={() => setProfileOpen(false)}>
-                          <Zap className="h-4 w-4 text-violet-400" /> Dashboard
+                        <Link href="/dashboard" className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-gray-300 hover:text-white hover:bg-white/[0.04] transition-colors" onClick={() => setProfileOpen(false)}>
+                          <Zap className="h-4 w-4 text-white" /> Dashboard
                         </Link>
-                        <div className="h-px bg-white/50 my-1.5" />
+                        <div className="h-px bg-[#232323] my-1.5" />
                         <button
                           onClick={() => { signOut(); setProfileOpen(false); }}
-                          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-red-400 hover:text-red-300 hover:bg-red-500/[0.08] transition-colors"
+                          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-red-400 hover:text-red-300 hover:bg-red-500/[0.04] transition-colors"
                         >
                           <LogOut className="h-4 w-4" /> Sign out
                         </button>
@@ -115,7 +115,7 @@ export function GlassNavbar() {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 rounded-xl  border border-white/10 text-gray-400 hover:text-white transition-colors"
+            className="md:hidden p-2 rounded-xl bg-[#111111] border border-[#232323] text-gray-400 hover:text-white transition-colors"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -128,18 +128,18 @@ export function GlassNavbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-x-0 top-16 z-[60] bg-[#0B0F1A]/95 backdrop-blur-2xl border-b border-white/10 p-4 md:hidden"
+            className="fixed inset-x-0 top-16 z-[60] bg-[#090909]/95 backdrop-blur-2xl border-b border-[#232323] p-4 md:hidden"
           >
             <div className="flex flex-col gap-2">
               {!session && navLinks.map((link) => (
-                <Link key={link.href} href={link.href} className="px-3 py-2.5 text-sm text-gray-300 hover:text-white rounded-xl hover:bg-white/[0.06]" onClick={() => setMobileOpen(false)}>
+                <Link key={link.href} href={link.href} className="px-3 py-2.5 text-sm text-gray-300 hover:text-white rounded-xl hover:bg-white/[0.04]" onClick={() => setMobileOpen(false)}>
                   {link.label}
                 </Link>
               ))}
               {session ? (
                 <>
-                  <Link href="/dashboard" className="px-3 py-2.5 text-sm text-gray-300 hover:text-white rounded-xl hover:bg-white/[0.06]" onClick={() => setMobileOpen(false)}>Dashboard</Link>
-                  <button onClick={() => { signOut(); setMobileOpen(false); }} className="text-left px-3 py-2.5 text-sm text-red-400 rounded-xl hover:bg-red-500/[0.08]">Sign out</button>
+                  <Link href="/dashboard" className="px-3 py-2.5 text-sm text-gray-300 hover:text-white rounded-xl hover:bg-white/[0.04]" onClick={() => setMobileOpen(false)}>Dashboard</Link>
+                  <button onClick={() => { signOut(); setMobileOpen(false); }} className="text-left px-3 py-2.5 text-sm text-red-400 rounded-xl hover:bg-red-500/[0.04]">Sign out</button>
                 </>
               ) : (
                 <div className="flex gap-2 pt-2">
@@ -152,7 +152,6 @@ export function GlassNavbar() {
         )}
       </AnimatePresence>
 
-    
       {profileOpen && <div className="fixed inset-0 z-40" onClick={() => setProfileOpen(false)} />}
     </>
   );

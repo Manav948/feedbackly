@@ -1,5 +1,6 @@
 import HeroSection from '@/components/home/HeroSection'
 import StatsBar from '@/components/home/StatsBar'
+import FeedbackFlowMap from '@/components/home/FeedbackFlowMap'
 import FeaturesSection from '@/components/home/FeaturesSection'
 import HowItWorks from '@/components/home/HowItWorks'
 import CTASection from '@/components/home/CTASection'
@@ -16,6 +17,7 @@ export default function Home() {
       <main className="relative pt-16">
         <HeroSection />
         <StatsBar />
+        <FeedbackFlowMap />
         <FeaturesSection />
         <HowItWorks />
         <CTASection />
