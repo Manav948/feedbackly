@@ -12,7 +12,7 @@ import { toast } from 'react-hot-toast'
 import { MessageCard } from '@/components/MessageCard'
 import { Button } from '@/components/ui/button'
 import { Loader2, RefreshCcw, Link as LinkIcon, Inbox, BarChart3, Settings, ShieldAlert } from 'lucide-react'
-import { Switch } from '@/components/ui/switch'
+import ToggleButton from '@/components/toogleButton'
 import { Separator } from '@/components/ui/separator'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -216,10 +216,9 @@ const Page = () => {
             </span>
             <div className="flex items-center justify-between mt-auto">
               <span className="text-xs text-gray-400 font-mono">Accepting</span>
-              <Switch
-                {...register('accpectMessage')}
+              <ToggleButton
                 checked={accpectMessage}
-                onCheckedChange={handleSwitching}
+                onChange={handleSwitching}
                 disabled={isSwitchLoading}
               />
             </div>

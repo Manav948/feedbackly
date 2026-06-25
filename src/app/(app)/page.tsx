@@ -7,22 +7,25 @@ import CTASection from '@/components/home/CTASection'
 import Footer from '@/components/home/Footer'
 import { GlassNavbar } from '@/components/GlassNavbar'
 import { AnimatedBackground } from '@/components/ui/AnimatedBackground'
+import SmoothScroll from '@/components/ui/SmoothScroll'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black ">
-      <AnimatedBackground variant="default" showGrid />
-      <GlassNavbar />
+    <SmoothScroll>
+      <div className="min-h-screen bg-black ">
+        <AnimatedBackground variant="default" showGrid />
+        <GlassNavbar />
 
-      <main className="relative pt-16">
-        <HeroSection />
-        <StatsBar />
-        <FeedbackFlowMap />
-        <FeaturesSection />
-        <HowItWorks />
-        <CTASection />
-      </main>
-      <Footer />
-    </div>
+        <main className="relative pt-16">
+          <HeroSection />
+          <StatsBar />
+          <FeedbackFlowMap />
+          <FeaturesSection />
+          <HowItWorks />
+          <CTASection />
+        </main>
+        <Footer />
+      </div>
+    </SmoothScroll>
   )
 }
